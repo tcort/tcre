@@ -25,7 +25,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ******************************************************************************/
 
+#include <ctype.h>
 #include <limits.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -90,10 +92,31 @@ static int amatch(char *subject, tcre_t *tcre) {
 	}
 }
 
+struct char_class {
+	char *s;
+	int (*test)(int);
+};
+
+struct char_class char_classes[] = {
+	{ "[:alnum:]", isalnum },
+	{ "[:alpha:]", isalpha },
+	{ "[:blank:]", isblank },
+	{ "[:cntrl:]", iscntrl },
+	{ "[:digit:]", isdigit },
+	{ "[:graph:]", isgraph },
+	{ "[:lower:]", islower },
+	{ "[:print:]", isprint },
+	{ "[:punct:]", ispunct },
+	{ "[:space:]", isspace },
+	{ "[:upper:]", isupper },
+	{ "[:xdigit:]", isxdigit }
+};
+#define N_CHAR_CLASSES (sizeof(char_classes)/sizeof(char_classes[0]))
+
 static tcre_t *compile(char *pattern) {
 	tcre_t *tcre;
 	size_t len;
-	size_t i, j, k;
+	size_t i, j, k, cc;
 	int invert;
 
 	if (pattern == NULL) {
@@ -111,6 +134,17 @@ static tcre_t *compile(char *pattern) {
 		switch (pattern[i]) {
 			case '[':
 				tcre[j].type = ORD;
+
+				for (cc = 0; cc < N_CHAR_CLASSES; cc++) {
+					if (strncmp(&pattern[i], char_classes[cc].s, strlen(char_classes[cc].s)) == 0) {
+						for (k = 0; k < UCHAR_MAX; k++) {
+							tcre[j].c[k] = !!char_classes[cc].test(k);
+						}
+						i += strlen(char_classes[cc].s) - 1;
+						goto foundit;
+					}
+				}
+
 				if (pattern[++i] == '^') {
 					invert = 1;
 				}
@@ -135,6 +169,7 @@ static tcre_t *compile(char *pattern) {
 						tcre[j].c[k] = !tcre[j].c[k];
 					}
 				}
+foundit:
 				break;
 			case '?':
 				tcre[j].type = QUEST;

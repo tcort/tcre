@@ -59,7 +59,9 @@ int main(int argc, char *argv[]) {
 		{ "z", "[a-z0-9]"},
 		{ "a", "[^b-z0-9]"},
 		{ "9", "[^b-z0-8]"},
-		{ "-", "[-]"}
+		{ "-", "[-]"},
+		{ "4", "[:digit:]" },
+		{ "C42C", "C[:digit:]+C" }
 	};
 #define NPASS (sizeof(pass)/sizeof(pass[0]))
 
@@ -72,6 +74,7 @@ int main(int argc, char *argv[]) {
 		{ NULL,   "abc"     },
 		{ NULL,   NULL      },
 		{ "Hola", "^H.l*o$" },
+		{ "CxxC", ".[:digit:]."    }
 	};
 #define NFAIL (sizeof(fail)/sizeof(fail[0]))
 
@@ -93,6 +96,10 @@ int main(int argc, char *argv[]) {
 			printf("subject='%s' pattern='%s'\n", fail[i][0], fail[i][1]);
 		}
 		check(match(fail[i][0], fail[i][1]) == 0, "should not match");
+	}
+
+	if (debug == 1) {
+		printf("OK\n");
 	}
 
 	exit(EXIT_SUCCESS);
