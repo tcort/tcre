@@ -25,3 +25,23 @@ Returns 1 if a match is found, otherwise 0.
 | `?`     | Matches the preceding character 0 or 1 times.          |
 | `*`     | Matches the preceding character 0 or more times.       |
 | `+`     | Matches the preceding character 1 or more times.       |
+
+### Character Classes
+
+The following are recognized in regular expressions:
+
+| Character Class |
+| --------------- |
+| `[:alnum:]`     |
+| `[:alpha:]`     |
+| `[:blank:]`     |
+| `[:cntrl:]`     |
+| `[:digit:]`     |
+| `[:graph:]`     |
+| `[:lower:]`     |
+| `[:print:]`     |
+| `[:punct:]`     |
+| `[:space:]`     |
+| `[:upper:]`     |
+| `[:xdigit:]`    |
+
