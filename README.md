@@ -45,3 +45,6 @@ The following are recognized in regular expressions:
 | `[:upper:]`     |
 | `[:xdigit:]`    |
 
+# License
+
+MIT License: see `LICENSE.md` for details.
