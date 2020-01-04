@@ -1,2 +1,13 @@
 *.test
 *.o
+CMakeCache.txt
+CMakeFiles/
+CMakeLists.txt
+CPackConfig.cmake
+CPackSourceConfig.cmake
+Makefile
+cmake_install.cmake
+libtcre.so*
+tcre.pc
+CTestTestfile.cmake
+Testing/
