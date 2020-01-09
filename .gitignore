@@ -2,7 +2,6 @@
 *.o
 CMakeCache.txt
 CMakeFiles/
-CMakeLists.txt
 CPackConfig.cmake
 CPackSourceConfig.cmake
 Makefile
